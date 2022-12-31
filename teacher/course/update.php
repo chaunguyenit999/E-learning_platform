@@ -1,5 +1,8 @@
 <!-- Load helper files -->
 <?php
+// this function fixes page navigation errors
+ob_start();
+
 require "C:/xampp/htdocs/HUMG_A1_EXAM/coures4u/config.php";
 require abs_path('db/db_connect.php');
 require abs_path('db/db_helper.php');
@@ -169,6 +172,7 @@ require abs_path('helpers/delete_file.php');
                             WHERE course_id=$current_course_infor[course_id]";
 
                             excute($sql);
+                            header('Location: my_course.php');
                         }
                     }
                     ?>

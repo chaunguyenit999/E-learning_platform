@@ -55,7 +55,7 @@ require abs_path('helpers/upload_file.php');
                     }
 
                     // Set number of records per page
-                    $limit = 5;
+                    $limit = 2;
 
                     // Calculate the number of pages needed
                     $total_pages = ceil($total_records / $limit);

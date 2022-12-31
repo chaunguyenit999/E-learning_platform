@@ -1,3 +1,10 @@
+
+<?php
+// this function fixes page navigation errors
+ob_start();
+?>
+
+
 <!-- Load helper files -->
 <?php
 require "C:/xampp/htdocs/HUMG_A1_EXAM/coures4u/config.php";
@@ -20,11 +27,25 @@ require abs_path('db/db_helper.php');
 
 <body>
     <?php
-    session_start();
     if (isset($_SESSION['email'])) {
         header('location: index.php');
     }
     ?>
+
+    <div class="form-wrapper">
+        <h4 class="form-wrah4per__title"><b>Log in to your Courses4U account</b></h4>
+        <form method="POST">
+            <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email" required></div>
+            <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password" required></div>
+            <p style="text-align:center">Or <a href="#">Forgot Password</a></p>
+            <input class="form-submit" type="submit" value="Login" name="login">
+        </form>
+        <p style="text-align:center; margin-top: 1vw;">Don't have an account? <a href="./register.php"><b>Sign up</b></a>
+        <p>
+    </div>
+
+    <!-- NAVBAR -->
+    <?php require abs_path('student/layout/nav.php'); ?>
 
     <?php
     if (isset($_POST['login'])) {
@@ -52,21 +73,6 @@ require abs_path('db/db_helper.php');
         }
     };
     ?>
-
-    <!-- NAVBAR -->
-    <?php require abs_path('student/layout/nav.php'); ?>
-
-    <div class="form-wrapper">
-        <h4 class="form-wrah4per__title"><b>Log in to your Courses4U account</b></h4>
-        <form method="POST">
-            <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email" required></div>
-            <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password" required></div>
-            <p style="text-align:center">Or <a href="#">Forgot Password</a></p>
-            <input class="form-submit" type="submit" value="Login" name="login">
-        </form>
-        <p style="text-align:center; margin-top: 1vw;">Don't have an account? <a href="./register.php"><b>Sign up</b></a>
-        <p>
-    </div>
 
     <!-- FOOTER -->
     <?php require abs_path('student/layout/footer.php'); ?>
