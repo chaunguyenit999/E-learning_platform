@@ -60,17 +60,20 @@ require abs_path('db/db_helper.php');
                 alert_message.innerHTML = '';
             }
 
+            var inputOk = true;
+
             function checkError(options) {
                 // array.forEach(function(currentValue, index, arr), thisValue)
-                let inputOK = true;
+
                 options.listInput.forEach(input => {
                     input.value = input.value.trim(); // Remove spaces
                     // Check empty
                     if (options.actions.checkEmpty) {
                         input.onblur = () => {
+                            console.log('blur event')
                             if (input.value.length == 0) {
                                 showError(input, "Please fill out this field")
-                                inputOK = false;
+                                inputOk = false;
                                 return;
                             } else {
                                 hideError(input);
@@ -108,9 +111,8 @@ require abs_path('db/db_helper.php');
                             hideError(input);
                         }
                     }
-                    // inputOK = false;
                 });
-                return inputOK;
+
             }
 
             var checkEmpty = checkError({
@@ -136,13 +138,13 @@ require abs_path('db/db_helper.php');
                 }
             });
 
-            console.log(checkEmpty)
-
-            register_form.addEventListener('submit', (e) => {
-                if (checkEmpty & checkEmail & checkLength) {
-                    // e.preventDefault();
-                }
-            })
+            console.log(inputOk);
+            if (!inputOk) {
+                register_form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // console.log(inputEmpty)
+                })
+            }
         })
     </script>
 </head>
