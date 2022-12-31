@@ -25,6 +25,7 @@ require abs_path('db/db_helper.php');
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const register_form = document.querySelector('#register_form');
+            const register_btn = document.querySelector('#register');
 
             const full_name = document.querySelector('#full_name');
             const email = document.querySelector('#email');
@@ -107,37 +108,40 @@ require abs_path('db/db_helper.php');
                             hideError(input);
                         }
                     }
+                    // inputOK = false;
                 });
                 return inputOK;
             }
 
-            register_form.addEventListener('input', () => {
-                let checkEmpty = checkError({
-                    listInput: [full_name, email, password, phone_number],
-                    actions: {
-                        checkEmpty: true,
-                    }
-                });
+            var checkEmpty = checkError({
+                listInput: [full_name, email, password, phone_number],
+                actions: {
+                    checkEmpty: true,
+                }
+            });
 
-                let checkEmail = checkError({
-                    listInput: [email],
-                    actions: {
-                        checkEmail: true,
-                    }
-                });
+            var checkEmail = checkError({
+                listInput: [email],
+                actions: {
+                    checkEmail: true,
+                }
+            });
 
-                let checkLength = checkError({
-                    listInput: [password],
-                    actions: {
-                        checkLength: true,
-                        minLength: 8,
-                        maxLength: 30
-                    }
-                });
+            var checkLength = checkError({
+                listInput: [password],
+                actions: {
+                    checkLength: true,
+                    minLength: 8,
+                    maxLength: 30
+                }
+            });
 
-                console.log(checkEmpty);
-                // console.log(checkEmail)
-                // console.log(checkLength)
+            console.log(checkEmpty)
+
+            register_form.addEventListener('submit', (e) => {
+                if (checkEmpty & checkEmail & checkLength) {
+                    // e.preventDefault();
+                }
             })
         })
     </script>
@@ -181,26 +185,26 @@ require abs_path('db/db_helper.php');
         <form method="POST" id="register_form">
             <div class="mb-3">
                 <div class="input-group">
-                    <input class="form-control" type="text" id="full_name" name="full_name" placeholder="Full Name" required><br>
+                    <input class="form-control" type="text" id="full_name" name="full_name" placeholder="Full Name"><br>
                 </div>
                 <span class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <div class="input-group">
-                    <input class="form-control" type="phone" id="email" name="email" placeholder="Email" required>
+                    <input class="form-control" type="phone" id="email" name="email" placeholder="Email">
                 </div>
                 <span class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <div class="input-group">
-                    <input class="form-control" type="password" id="password" name="password" placeholder="Password" required>
+                    <input class="form-control" type="password" id="password" name="password" placeholder="Password">
                     <a class="btn btn-outline-secondary" type="button" id="show_password"><i class="fa-solid fa-eye"></i></a>
                 </div>
                 <span class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <div class="input-group">
-                    <input class="form-control" type="number" id="phone_number" name="phone_number" placeholder="Phone Number" required>
+                    <input class="form-control" type="number" id="phone_number" name="phone_number" placeholder="Phone Number">
                 </div>
                 <span class="text-danger"></span>
             </div>
