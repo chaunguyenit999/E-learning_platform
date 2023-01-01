@@ -25,8 +25,6 @@ require abs_path('db/db_helper.php');
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const register_form = document.querySelector('#register_form');
-            const register_btn = document.querySelector('#register');
-
             const full_name = document.querySelector('#full_name');
             const email = document.querySelector('#email');
             const password = document.querySelector('#password');
@@ -59,92 +57,121 @@ require abs_path('db/db_helper.php');
                 input.classList.remove('border-danger');
                 alert_message.innerHTML = '';
             }
-
-            var inputOk = true;
-
-            function checkError(options) {
-                // array.forEach(function(currentValue, index, arr), thisValue)
-
-                options.listInput.forEach(input => {
-                    input.value = input.value.trim(); // Remove spaces
-                    // Check empty
-                    if (options.actions.checkEmpty) {
+            class checkEmpty {
+                constructor(inputList) {
+                    this.inputList = inputList;
+                }
+                showErr() {
+                    this.inputList.forEach(input => {
                         input.onblur = () => {
-                            console.log('blur event')
-                            if (input.value.length == 0) {
+                            if (!input.value) {
                                 showError(input, "Please fill out this field")
-                                inputOk = false;
-                                return;
                             } else {
                                 hideError(input);
                             }
                         }
-                    }
-                    // Check email
-                    if (options.actions.checkEmail) {
-                        let regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+                    })
+                }
+                isError() {
+                    let isError = false;
+                    this.inputList.forEach(input => {
+                        if (!input.value) {
+                            isError = true;
+                            showError(input, "Please fill out this field")
+                        }
+                    })
+                    return isError;
+                }
+            }
+
+            class checkEmail {
+                constructor(inputList) {
+                    this.inputList = inputList;
+                    this.regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+                }
+                showErr() {
+                    this.inputList.forEach(input => {
                         input.onblur = () => {
-                            if (!regexEmail.test(input.value)) {
+                            if (!this.regexEmail.test(input.value)) {
                                 showError(input, "Email invalid");
-                                inputOK = false;
-                                return;
                             } else {
                                 hideError(input);
                             }
                         }
-                    }
-                    // Check length of field
-                    if (options.actions.checkLength) {
-                        let min = options.actions.minLength;
-                        let max = options.actions.maxLength;
+                    })
+                }
+                isError() {
+                    let isError = false;
+                    this.inputList.forEach(input => {
+                        if (!this.regexEmail.test(input.value)) {
+                            isError = true;
+                            showError(input, "Email invalid");
+                        }
+                    })
+                    return isError;
+                }
+            }
+
+            class checkLength {
+                constructor(inputList, minLength, maxLength) {
+                    this.inputList = inputList;
+                    this.minLength = minLength;
+                    this.maxLength = maxLength;
+                }
+                showErr() {
+                    this.inputList.forEach(input => {
                         input.onblur = () => {
-                            if (input.value.length < min) {
-                                showError(input, `Must have at least ${min} characters`)
-                                inputOK = false;
-                                return;
+                            if (input.value.length < this.minLength) {
+                                showError(input, `No less than ${this.minLength} characters`)
+                            } else if (input.value.length > this.maxLength) {
+                                showError(input, `No more than ${this.maxLength} characters`)
+                            } else {
+                                hideError(input);
                             }
-                            if (input.value.length > max) {
-                                showError(input, `No more than ${max} characters`)
-                                inputOK = false;
-                                return;
-                            }
+                        }
+                    })
+                }
+                isError() {
+                    let isError = false;
+                    this.inputList.forEach(input => {
+                        if (input.value.length < this.minLength) {
+                            showError(input, `No less than ${this.minLength} characters`)
+                            isError = true;
+                        } else if (input.value.length > this.maxLength) {
+                            showError(input, `No more than ${this.maxLength} characters`)
+                            isError = true;
+                        } else {
                             hideError(input);
                         }
-                    }
-                });
-
+                    })
+                    return isError;
+                }
             }
 
-            var checkEmpty = checkError({
-                listInput: [full_name, email, password, phone_number],
-                actions: {
-                    checkEmpty: true,
-                }
-            });
+            let check_empty = new checkEmpty([full_name, email, password, phone_number]);
+            let check_email = new checkEmail([email]);
+            let check_length = new checkLength([password], 8, 20);
+            check_empty.showErr();
+            check_email.showErr();
+            check_length.showErr();
 
-            var checkEmail = checkError({
-                listInput: [email],
-                actions: {
-                    checkEmail: true,
-                }
-            });
+            register_form.addEventListener('submit', (e) => {
+                let isEmptyError = check_empty.isError()
+                let isEmailError = check_email.isError()
+                let isLengthError = check_length.isError()
+                console.log(isEmptyError)
+                console.log(isEmailError)
+                console.log(isLengthError)
 
-            var checkLength = checkError({
-                listInput: [password],
-                actions: {
-                    checkLength: true,
-                    minLength: 8,
-                    maxLength: 30
-                }
-            });
-
-            console.log(inputOk);
-            if (!inputOk) {
-                register_form.addEventListener('submit', (e) => {
+                if (isEmptyError || isEmailError || isLengthError) {
+                    isEmptyError
+                    isEmailError
+                    isLengthError
                     e.preventDefault();
-                    // console.log(inputEmpty)
-                })
-            }
+                } else {
+                    register_form.submit()
+                }
+            })
         })
     </script>
 </head>
