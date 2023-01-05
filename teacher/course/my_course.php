@@ -16,6 +16,35 @@ require abs_path('helpers/upload_file.php');
     <!-- Import css & script link -->
 
     <?php require abs_path('teacher/layout/css_link.php'); ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let search_input = document.querySelector("#search_input");
+            let suggestion_data_list = document.querySelector("#datalistOptions");
+            search_input.onkeyup = function() {
+                // console.log(search_input.value);
+
+                let xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        suggestion_data_list.innerHTML = this.responseText;
+                        console.log(this.responseText);
+                    }
+                };
+                // open file to send
+                xmlhttp.open("POST", "http://localhost:3000/HUMG_A1_EXAM/coures4u/helpers/search_suggestion_process.php", true);
+
+                const dataSend = {
+                    search_input: search_input.value
+                }
+
+                const jsonData = JSON.stringify(dataSend);
+                // send data
+                xmlhttp.send(jsonData);
+            }
+        })
+    </script>
 </head>
 
 <body>
@@ -86,12 +115,18 @@ require abs_path('helpers/upload_file.php');
                     <!-- Search form -->
                     <form action="" class='search-form'>
                         <div class="input-group mb-3">
-                            <input name="keyword" value="<?php isset($kw) ? printf($kw) : printf("") ?>" style="width: 50% !important;" class="form-control" placeholder="Type Course name, title, language,...">
+                            <input id="search_input" list="datalistOptions" name="keyword" value="<?php isset($kw) ? printf($kw) : printf("") ?>" style="width: 50% !important;" class="form-control" placeholder="Type Course name, title, language,...">
+                            <!-- Search suggestion -->
+                            <datalist id="datalistOptions">
+                                <!-- <option value="Computer Science"> -->
+                            </datalist>
+
+                            <!-- Search select option -->
                             <select class="form-select" id="inputGroupSelect01" style="width: 20% !important;" name="search_option">
-                                <option value="course_id" <?php ($search_type == 'course_id' ? printf('selected') : '')?>>Course ID</option>
-                                <option value="course_name" <?php ($search_type == 'course_name' ? printf('selected') : '')?>>Course Name</option>
-                                <option value="course_title" <?php ($search_type == 'course_title' ? printf('selected') : '')?>>Course Title</option>
-                                <option value="language_name" <?php ($search_type == 'language_name' ? printf('selected') : '')?>>Language Name</option>
+                                <option value="course_id" <?php ($search_type == 'course_id' ? printf('selected') : '') ?>>Course ID</option>
+                                <option value="course_name" <?php ($search_type == 'course_name' ? printf('selected') : '') ?>>Course Name</option>
+                                <option value="course_title" <?php ($search_type == 'course_title' ? printf('selected') : '') ?>>Course Title</option>
+                                <option value="language_name" <?php ($search_type == 'language_name' ? printf('selected') : '') ?>>Language Name</option>
                             </select>
 
                             <input style="width: 8rem !important;" type="submit" class="btn btn-success" value="Search" name="search">

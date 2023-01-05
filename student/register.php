@@ -271,7 +271,7 @@ require abs_path('db/db_helper.php');
                     isExist
                     e.preventDefault();
                 } else {
-                    register_form.submit() 
+                    register_form.submit()
                 }
 
             })
