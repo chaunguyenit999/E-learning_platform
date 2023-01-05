@@ -51,6 +51,7 @@ require abs_path('db/db_helper.php');
                         let inp = content.value;
                         if (inp.length<30) {
                             require_input = false
+                            submit_form.disabled = true
                             noti.innerHTML = `bạn cần đánh giá thêm ${30 - inp.length} kí tự`;
                         }
                         else {
@@ -86,6 +87,7 @@ require abs_path('db/db_helper.php');
                     // thêm skien cho sao
                     all_star.forEach( function(star) {
                         star.addEventListener('mousemove',mouve_move)
+
                         if (rating_value.value == 0) {
                             star.addEventListener('mouseout',mouse_out)
                             star.addEventListener('click',function() {
@@ -95,6 +97,7 @@ require abs_path('db/db_helper.php');
                                 })
                             })
                         }
+                        
                         else{
                             star.addEventListener('click',function() {
                                 require_rising_star = true
@@ -257,7 +260,7 @@ require abs_path('db/db_helper.php');
                                                         ?>
                                                         <input type="hidden" class="rating_value<?= $infor_course[0]['course_id'] ?>" name="rating_value<?= $infor_course[0]['course_id'] ?>" value = "<?=$rate[0]['rate']?>">
                                                         <input type="hidden" name="course_id" value="<?= $infor_course[0]['course_id'] ?>">
-                                                        <textarea oninput="check_input('<?= $infor_course[0]['course_id'] ?>')" id = "rate<?= $infor_course[0]['course_id'] ?>" rows=10 cols=50 name="content" required><?= $rate[0]['content'] ?></textarea>
+                                                        <textarea id = "rate<?= $infor_course[0]['course_id'] ?>" rows=10 cols=50 name="content" required><?= $rate[0]['content'] ?></textarea>
                                                         <p class="notification notification<?= $infor_course[0]['course_id'] ?>">bạn cần đánh giá trên 30 kí tự</p>
                                                         <input type="hidden" name="user_id" value="<?= $process_course[0]['user_id'] ?>">
                                                     </div>
@@ -297,7 +300,7 @@ require abs_path('db/db_helper.php');
                                                     <?php } ?>
                                                 <input type="hidden" name="course_id" value="<?= $infor_course[0]['course_id'] ?>">
                                                 <input type="hidden" class="rating_value<?= $infor_course[0]['course_id'] ?>" name="rating_value<?= $infor_course[0]['course_id'] ?>" value = "0">
-                                                <textarea oninput="check_input('<?= $infor_course[0]['course_id'] ?>')" id = "rate<?= $infor_course[0]['course_id'] ?>" rows=10 cols=50 name="content" required></textarea>
+                                                <textarea id = "rate<?= $infor_course[0]['course_id'] ?>" rows=10 cols=50 name="content" required></textarea>
                                                 <p class="notification notification<?= $infor_course[0]['course_id'] ?>">bạn cần đánh giá trên 30 kí tự</p>
                                                 <input type="hidden" name="user_id" value="<?= $process_course[0]['user_id'] ?>">
                                             </div>
