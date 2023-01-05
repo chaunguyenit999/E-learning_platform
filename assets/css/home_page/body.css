@@ -110,8 +110,57 @@ div#card1 {
     margin-right: 36%;
 }
 
-.grid-4column>a:hover {
-    color: rgba(255, 255, 255, 0.3);
+ .rating__star {
+    cursor: pointer;
+    color: orange;
+ }
+.grid-4column__box {
+    display: grid;
+    grid-template-rows: 200px 150px 100px;
+    width: 100%;
+    min-height: 25vh;
+    color: black;
+}
+a{
+    text-decoration: none;
+}
+
+.grid-4column__box--img {
+    grid-row: 1;
+    text-align: center;
+    width: 100%;
+    color: black;
+    padding-top: 20px;
+}
+
+.grid-4column__box--name {
+    grid-row: 2;
+    text-decoration: none;
+    color: black;
+}
+
+.grid-4column__box--inf {
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 19% 25% 25% 25%;
+}
+
+.grid-4column__box--inf--meter {
+    grid-column: 1/-1;
+}
+
+.grid-4column__box--inf--name {
+    grid-column: 1/-1;
+}
+
+.grid-4column__box--inf-left {
+    color: black;
+}
+
+.grid-4column__box--inf-right {
+    text-align: right;
+    color: black;
 }
 
 
@@ -122,3 +171,6 @@ div#card1 {
 .checked {
     color: orange;
 }
+.open_modal {
+    text-decoration: none;
+    color: black;}

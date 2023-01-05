@@ -1,6 +1,6 @@
 <!-- Load helper files -->
 <?php
-require "C:/xampp/htdocs/HUMG_A1_EXAM/coures4u/config.php";
+require "C:/xampp/htdocs/HUMG_A1_EXAM_chau/coures4u/config.php";
 
 require abs_path('db/db_helper.php');
 ?>
@@ -140,7 +140,7 @@ require abs_path('db/db_helper.php');
                             <div class="course-infor-more">
                                 <span style="font-size: 18px;"><b><?= $mycourse['course_name'] ?></b></span><br>
                                 <div style="color: 	rgb(0, 0, 0, 0.5); font: size 12px;">
-                                    <?php 
+                                    <?php
                                         if ($mycourse['updated_date']== NULL) {
                                             $course_update_date = date('Y-m-d', strtotime($mycourse['created_date']));
                                         } else {
@@ -150,9 +150,9 @@ require abs_path('db/db_helper.php');
                                     <span>Last updated: <b style="color: #198754 !important;"><?= $course_update_date ?></b></span><br>
                                     <!-- Calculate SUM lecture_duration -->
                                     <?php
-                                    $sql = "SELECT SUM(lecture_duration) AS total FROM lecture 
+                                    $sql = "SELECT SUM(lecture_duration) AS total FROM lecture
                                                 WHERE chapter_id IN (
-                                                SELECT course.course_id FROM course, chapter 
+                                                SELECT course.course_id FROM course, chapter
                                                 WHERE course.course_id = chapter.course_id
                                                 AND course.course_id = $mycourse[course_id])";
                                     $total_duration = executeResult($sql, $onlyOne = true)['total'];
@@ -198,7 +198,7 @@ require abs_path('db/db_helper.php');
                         </ul>
                     </div>
                     <?php } ?>
-                    
+
                 </div>
             </div>
         <?php } ?>

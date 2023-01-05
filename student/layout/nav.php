@@ -23,7 +23,8 @@ if (isset($_SESSION['email'])) {
                     <img src="<?= abs_url('assets/img/avatar/' . $CURRENT_USER_INFOR['avatar']) ?>" class="rounded-circle" alt="Courses4U" width="50px">
                     <label><?= $CURRENT_USER_EMAIL ?></label>
                 </li>
-                <li><a class="dropdown-item" href=<?= abs_url('student/HIEU/my_learning.php') ?>>My learning</a></li>
+                <li><a class="dropdown-item" href=<?= abs_url('student/my_learning.php') ?>>My learning</a></li>
+                <li><a class="dropdown-item" href=<?= abs_url('student/control.php') ?>>Control</a></li>
                 <li><a class="dropdown-item" href=<?= abs_url('student/profile.php') ?>>Edit profile</a></li>
                 <li><a class="dropdown-item" href=<?= abs_url('student/logout.php') ?>>Logout</a></li>
             </ul>
@@ -65,7 +66,7 @@ if (isset($_SESSION['email'])) {
                                                 </li>
                                                 <!-- TOPIC-START -->
                                                 <?php
-                                                $sql = "SELECT * FROM subcategory_topic, topic 
+                                                $sql = "SELECT * FROM subcategory_topic, topic
                                                     WHERE subcategory_id = $subcategory[subcategory_id]
                                                     AND topic.topic_id = subcategory_topic.topic_id";
                                                 $topics = executeResult($sql);
@@ -147,7 +148,7 @@ if (isset($_SESSION['email'])) {
 
 
                     <!-- Search -->
-                    <form action=<?= abs_url('student/HIEU/search_value.php') ?> class="navbar__search-container d-flex" role="search" method="get">
+                    <form action=<?= abs_url('student/course_search.php') ?> class="navbar__search-container d-flex" role="search" method="get">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" list="datalistOptions" name="Search_form" required>
                         <select name="type_search" class="border-success rounded-pill">
                             <option value="course">tìm kiếm theo tên khóa học</option>

@@ -1,6 +1,6 @@
 <!-- Load helper files -->
 <?php
-require "C:/xampp/htdocs/HUMG_A1_EXAM/coures4u/config.php";
+require "C:/xampp/htdocs/HUMG_A1_EXAM_chau/coures4u/config.php";
 
 require abs_path('db/db_helper.php');
 ?>
@@ -31,7 +31,7 @@ require abs_path('db/db_helper.php');
         $sql = "SELECT email FROM user WHERE email = '$email'";
         $result = $conn->query($sql);
         if ($result->num_rows == 0) {
-            // If the email already exists, check the phone number 
+            // If the email already exists, check the phone number
             $sql = "SELECT phone_number FROM user WHERE phone_number = $phone_number";
             $result = $conn->query($sql);
             if ($result->num_rows == 0) {

@@ -1,6 +1,6 @@
 <!-- Load helper files -->
 <?php
-require "C:/xampp/htdocs/HUMG_A1_EXAM/coures4u/config.php";
+require "C:/xampp/htdocs/HUMG_A1_EXAM_chau/coures4u/config.php";
 
 require abs_path('db/db_helper.php');
 ?>
@@ -98,7 +98,7 @@ require abs_path('db/db_helper.php');
             AND category.category_id = subcategory.category_id
             AND course.sub_topic_id = subcategory_topic.sub_topic_id
             AND subcategory_topic.subcategory_id = subcategory.subcategory_id
-            AND course.user_id = user.user_id 
+            AND course.user_id = user.user_id
             AND course.language_id = language.language_id;";
         }
         if (isset($_GET['subcategory_id'])) {
@@ -106,7 +106,7 @@ require abs_path('db/db_helper.php');
             $sql = "SELECT * FROM course, user, subcategory_topic, language
             WHERE subcategory_topic.subcategory_id = $filter_subcategory_id
             AND course.sub_topic_id = subcategory_topic.sub_topic_id
-            AND course.user_id = user.user_id 
+            AND course.user_id = user.user_id
             AND course.language_id = language.language_id;";
         }
         if (isset($_GET['topic_id'])) {
@@ -114,7 +114,7 @@ require abs_path('db/db_helper.php');
             $sql = "SELECT * FROM course, user, subcategory_topic, language
                 WHERE subcategory_topic.topic_id = $filter_topic_id
                 AND course.sub_topic_id = subcategory_topic.sub_topic_id
-                AND course.user_id = user.user_id 
+                AND course.user_id = user.user_id
                 AND course.language_id = language.language_id;";
         }
 
@@ -175,9 +175,9 @@ require abs_path('db/db_helper.php');
                                     <span>Last updated: <b style="color: #198754 !important;"><?= $course_update_date ?></b></span><br>
                                     <!-- Calculate SUM lecture_duration -->
                                     <?php
-                                    $sql = "SELECT SUM(lecture_duration) AS total FROM lecture 
+                                    $sql = "SELECT SUM(lecture_duration) AS total FROM lecture
                                                 WHERE chapter_id IN (
-                                                SELECT course.course_id FROM course, chapter 
+                                                SELECT course.course_id FROM course, chapter
                                                 WHERE course.course_id = chapter.course_id
                                                 AND course.course_id = $mycourse[course_id])";
                                     $total_duration = executeResult($sql, $onlyOne = true)['total'];

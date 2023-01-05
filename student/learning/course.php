@@ -1,6 +1,6 @@
 <!-- Load helper files -->
 <?php
-require "C:/xampp/htdocs/HUMG_A1_EXAM/coures4u/config.php";
+require "C:/xampp/htdocs/HUMG_A1_EXAM_chau/coures4u/config.php";
 require abs_path('db/db_helper.php');
 require abs_path('helpers/upload_file.php');
 ?>
@@ -170,13 +170,13 @@ require abs_path('helpers/upload_file.php');
                             <div style="margin-left: 2em;">
                                 <!-- total lecture -->
                                 <?php
-                                $sql = "SELECT COUNT(*) AS total FROM lecture WHERE chapter_id 
+                                $sql = "SELECT COUNT(*) AS total FROM lecture WHERE chapter_id
                                 IN (SELECT chapter.chapter_id FROM chapter WHERE course_id = $course_id)";
                                 $numOfLectures = executeResult($sql, $onlyOne = true)['total'];
                                 ?>
                                 <p>Lectures: <?= $numOfLectures ?></p>
                                 <?php
-                                $sql = "SELECT SUM(lecture_duration) AS total FROM lecture WHERE chapter_id 
+                                $sql = "SELECT SUM(lecture_duration) AS total FROM lecture WHERE chapter_id
                                 IN (SELECT chapter.chapter_id FROM chapter WHERE course_id = $course_id)";
                                 $sumOfLectures = executeResult($sql, $onlyOne = true)['total'];
                                 ?>

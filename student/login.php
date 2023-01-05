@@ -1,6 +1,6 @@
 <!-- Load helper files -->
 <?php
-require "C:/xampp/htdocs/HUMG_A1_EXAM/coures4u/config.php";
+require "C:/xampp/htdocs/HUMG_A1_EXAM_chau/coures4u/config.php";
 
 require abs_path('db/db_helper.php');
 ?>
