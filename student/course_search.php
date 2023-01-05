@@ -195,7 +195,7 @@ require abs_path('db/db_connect.php');
                 </strong>
                 </div>");
                 // thông số phân trang
-                $sql = "SELECT * FROM course,user WHERE course.user_id = user.user_id AND course_name LIKE '%" . $userSearch . "%'";
+                $sql = "SELECT * FROM course,user WHERE course.user_id = user.user_id AND user.real_name LIKE '%" . $userSearch . "%'";
                 $search_results = $conn->query($sql);
                 $rowcount=$search_results->num_rows;
                 $results_per_page =4;
