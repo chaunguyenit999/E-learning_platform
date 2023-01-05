@@ -25,11 +25,11 @@ require abs_path('db/db_helper.php');
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const register_form = document.querySelector('#register_form');
-            const full_name = document.querySelector('#full_name');
-            const email = document.querySelector('#email');
-            const password = document.querySelector('#password');
-            const show_password = document.querySelector('#show_password');
-            const phone_number = document.querySelector('#phone_number');
+            const full_name = register_form.querySelector('#full_name');
+            const email = register_form.querySelector('#email');
+            const password = register_form.querySelector('#password');
+            const show_password = register_form.querySelector('#show_password');
+            const phone_number = register_form.querySelector('#phone_number');
 
             // Show password
             show_password.onclick = () => {
@@ -113,64 +113,167 @@ require abs_path('db/db_helper.php');
             }
 
             class checkLength {
-                constructor(inputList, minLength, maxLength) {
-                    this.inputList = inputList;
-                    this.minLength = minLength;
-                    this.maxLength = maxLength;
+                constructor(dataList) {
+                    this.dataList = dataList;
                 }
                 showErr() {
-                    this.inputList.forEach(input => {
-                        input.onblur = () => {
-                            if (input.value.length < this.minLength) {
-                                showError(input, `No less than ${this.minLength} characters`)
-                            } else if (input.value.length > this.maxLength) {
-                                showError(input, `No more than ${this.maxLength} characters`)
-                            } else {
-                                hideError(input);
+                    this.dataList.forEach(data => {
+                        data.input.onblur = () => {
+                            if (data.input.value.length < data.minLength) {
+                                showError(data.input, `No less than ${data.minLength} characters`)
+                                return;
                             }
+
+                            if (data.input.value.length > data.maxLength) {
+                                showError(data.input, `No more than ${data.maxLength} characters`)
+                                return;
+                            }
+                            hideError(data.input);
                         }
                     })
                 }
                 isError() {
                     let isError = false;
-                    this.inputList.forEach(input => {
-                        if (input.value.length < this.minLength) {
-                            showError(input, `No less than ${this.minLength} characters`)
+                    this.dataList.forEach(data => {
+                        if (data.input.value.length < data.minLength) {
+                            showError(data.input, `No less than ${data.minLength} characters`)
                             isError = true;
-                        } else if (input.value.length > this.maxLength) {
-                            showError(input, `No more than ${this.maxLength} characters`)
+                            return;
+                        }
+
+                        if (data.input.value.length > data.maxLength) {
+                            showError(data.input, `No more than ${data.maxLength} characters`)
                             isError = true;
-                        } else {
-                            hideError(input);
+                            return;
+                        }
+                        hideError(data.input);
+                    })
+                    return isError;
+                }
+            }
+
+            class checkExist {
+                constructor(dataList) {
+                    this.dataList = dataList;
+                }
+                showErr() {
+                    this.dataList.forEach(data => {
+                        data.input.oninput = () => {
+                            // Create request object
+                            let xmlhttp = new XMLHttpRequest();
+
+                            xmlhttp.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    if (xmlhttp.responseText == "existed") {
+                                        showError(data.input, "Information already exists!");
+                                        return;
+                                    }
+                                    hideError(data.input);
+                                }
+                            };
+                            // open file to send
+                            xmlhttp.open("POST", "http://localhost:3000/HUMG_A1_EXAM/coures4u/helpers/check_exist_process.php", true);
+
+                            const dataSend = {
+                                table_name: data.tb,
+                                column_check: data.col,
+                                input_value: data.input.value,
+                            }
+
+                            const jsonData = JSON.stringify(dataSend);
+                            // send data
+                            xmlhttp.send(jsonData);
                         }
                     })
+                }
+
+                isError() {
+                    debugger;
+                    let isError = false;
+
+                    this.dataList.forEach(data => {
+                        let xmlhttp = new XMLHttpRequest();
+
+                        xmlhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                if (xmlhttp.responseText == "existed") {
+                                    showError(data.input, "Information already exists!");
+                                    isError = true;
+                                    return;
+                                }
+                                hideError(data.input);
+                            }
+                        };
+                        // open file to send
+                        xmlhttp.open("POST", "http://localhost:3000/HUMG_A1_EXAM/coures4u/helpers/check_exist_process.php", true);
+
+                        const dataSend = {
+                            table_name: data.tb,
+                            column_check: data.col,
+                            input_value: data.input.value,
+                        }
+
+                        const jsonData = JSON.stringify(dataSend);
+                        // send data
+                        xmlhttp.send(jsonData);
+                    })
+
                     return isError;
                 }
             }
 
             let check_empty = new checkEmpty([full_name, email, password, phone_number]);
             let check_email = new checkEmail([email]);
-            let check_length = new checkLength([password], 8, 20);
+            let check_length = new checkLength([{
+                    input: phone_number,
+                    minLength: 9,
+                    maxLength: 13
+                },
+                {
+                    input: password,
+                    minLength: 8,
+                    maxLength: 20
+                }
+            ]);
+            let check_exist = new checkExist([{
+                    input: phone_number,
+                    tb: 'user',
+                    col: 'phone_number'
+                },
+                {
+                    input: email,
+                    tb: 'user',
+                    col: 'email'
+                }
+            ]);
+
             check_empty.showErr();
             check_email.showErr();
             check_length.showErr();
+            check_exist.showErr();
 
             register_form.addEventListener('submit', (e) => {
+                // e.preventDefault();
                 let isEmptyError = check_empty.isError()
                 let isEmailError = check_email.isError()
                 let isLengthError = check_length.isError()
+                let isExist = check_exist.isError()
+
                 console.log(isEmptyError)
                 console.log(isEmailError)
                 console.log(isLengthError)
+                console.log(isExist)
 
-                if (isEmptyError || isEmailError || isLengthError) {
+                if (isEmptyError || isEmailError || isLengthError || isExist) {
                     isEmptyError
                     isEmailError
                     isLengthError
+                    isExist
                     e.preventDefault();
                 } else {
-                    register_form.submit()
+                    register_form.submit() 
                 }
+
             })
         })
     </script>
